@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Test de Bienestar Mental</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        background: #ffffff;
+        padding: 25px;
+        max-width: 850px;
+        margin: auto;
+        border-radius: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        border: 1px solid #d5dce6;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1f2f45;
+    }
+    .question {
+        margin-bottom: 18px;
+        padding: 12px 15px;
+        background: #f8faff;
+        border-radius: 10px;
+        border-left: 4px solid #5c8fe3;
+    }
+    button {
+        background: #5c8fe3;
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+        width: 100%;
+    }
+    #resultado {
+        margin-top: 20px;
+        padding: 18px;
+        background: #dfeaff;
+        border-radius: 10px;
+        border-left: 5px solid #5c8fe3;
+        font-size: 19px;
+        color: #1f2f45;
+        display: none;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Evaluación Informativa de Bienestar Emocional</h2>
+
+    <form id="testForm">
+
+        <div class="question">
+            <label>1. ¿Sientes que últimamente te cuesta disfrutar las cosas que antes te hacían feliz?</label><br>
+            <label><input type="radio" name="p1" value="depresion"> Sí, mucho</label><br>
+            <label><input type="radio" name="p1" value="ansiedad"> A veces</label><br>
+            <label><input type="radio" name="p1" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>2. ¿Tienes pensamientos acelerados o sientes tu mente muy inquieta?</label><br>
+            <label><input type="radio" name="p2" value="ansiedad"> Muy seguido</label><br>
+            <label><input type="radio" name="p2" value="tdah"> A veces me distraigo mucho</label><br>
+            <label><input type="radio" name="p2" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>3. ¿Has sentido miedo repentino acompañado de síntomas físicos?</label><br>
+            <label><input type="radio" name="p3" value="panico"> Sí, varias veces</label><br>
+            <label><input type="radio" name="p3" value="ansiedad"> A veces</label><br>
+            <label><input type="radio" name="p3" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>4. ¿Tienes cambios fuertes de humor sin una razón clara?</label><br>
+            <label><input type="radio" name="p4" value="bipolar"> Sí, muy bruscos</label><br>
+            <label><input type="radio" name="p4" value="tlp"> Sí, pero relacionados con mis emociones</label><br>
+            <label><input type="radio" name="p4" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>5. ¿Te cuesta manejar recuerdos o experiencias difíciles del pasado?</label><br>
+            <label><input type="radio" name="p5" value="tept"> Sí, aún me afectan</label><br>
+            <label><input type="radio" name="p5" value="estres"> Solo cuando estoy bajo presión</label><br>
+            <label><input type="radio" name="p5" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>6. ¿Te resulta complicado mantener orden o concentrarte en una sola cosa?</label><br>
+            <label><input type="radio" name="p6" value="tdah"> Muy seguido</label><br>
+            <label><input type="radio" name="p6" value="estres"> A veces</label><br>
+            <label><input type="radio" name="p6" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>7. ¿Te sientes abrumado por cosas pequeñas o fáciles de resolver?</label><br>
+            <label><input type="radio" name="p7" value="ansiedad"> Sí</label><br>
+            <label><input type="radio" name="p7" value="estres"> A veces</label><br>
+            <label><input type="radio" name="p7" value="normal"> No</label><br>
+        </div>
+
+        <div class="question">
+            <label>8. ¿Sientes que te cuesta confiar en los demás o tus emociones cambian muy rápido?</label><br>
+            <label><input type="radio" name="p8" value="tlp"> Sí, mucho</label><br>
+            <label><input type="radio" name="p8" value="ansiedad"> A veces</label><br>
+            <label><input type="radio" name="p8" value="normal"> No</label><br>
+        </div>
+
+        <button type="button" onclick="calcularResultado()">Ver Resultado</button>
+    </form>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+function calcularResultado() {
+    const form = new FormData(document.getElementById('testForm'));
+    const conteo = {};
+
+    for (let valor of form.values()) {
+        if (!conteo[valor]) conteo[valor] = 0;
+        conteo[valor]++;
+    }
+
+    let mayor = "normal";
+    let max = 0;
+
+    for (let key in conteo) {
+        if (conteo[key] > max && key !== "normal") {
+            max = conteo[key];
+            mayor = key;
+        }
+    }
+
+    let texto = "";
+    switch (mayor) {
+        case "ansiedad": texto = "RESULTADO: ANSIEDAD — Tus respuestas coinciden con patrones asociados a ansiedad."; break;
+        case "depresion": texto = "RESULTADO: DEPRESIÓN — Varias respuestas reflejan señales relacionadas con depresión."; break;
+        case "tdah": texto = "RESULTADO: TDAH — Presentas dificultades de atención o concentración típicas del TDAH."; break;
+        case "panico": texto = "RESULTADO: ATAQUES DE PÁNICO — Podrían existir indicios de episodios de pánico."; break;
+        case "bipolar": texto = "RESULTADO: CAMBIOS DE ÁNIMO — Tus respuestas coinciden con fluctuaciones intensas de estado de ánimo."; break;
+        case "tlp": texto = "RESULTADO: INESTABILIDAD EMOCIONAL — Tu patrón de respuestas coincide con características del TLP."; break;
+        case "estres": texto = "RESULTADO: ESTRÉS — Muestras signos de carga emocional y estrés elevado."; break;
+        case "tept": texto = "RESULTADO: RECUERDOS TRAUMÁTICOS — Tus respuestas sugieren señales relacionadas con TEPT."; break;
+        default:
+            texto = "RESULTADO: NORMAL — Tus respuestas están dentro de un rango estable o saludable.";
+    }
+
+    const res = document.getElementById("resultado");
+    res.style.display = "block";
+    res.textContent = texto + " Este test es únicamente informativo.";
+}
+</script>
+
+</body>
+</html>
